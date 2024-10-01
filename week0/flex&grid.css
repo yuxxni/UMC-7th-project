@@ -1,0 +1,80 @@
+.container1{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-template-rows: 1fr 4fr 4fr 1fr;
+  grid-template-areas:
+  'a b b' 
+  'c c c'
+  'd . e'
+  'd . e'
+  'f f f';
+}
+.item1{
+ display: flex;
+  color:white;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color:rgb(36, 35, 35);
+  grid-area: a;
+  
+}
+
+.item2{
+  color:white;
+  display: flex;
+  justify-content: center;
+ place-items: center;
+  background-color: rgb(239, 58, 58);
+  grid-area: b;
+}
+
+.item3{
+  color:white;
+  display: flex;
+  justify-content: center;
+  text-align:center;
+place-items:center;
+  background-color: rgb(103, 144, 211);
+  grid-area: c;
+}
+
+.item4{
+  display: flex;
+  color:white;
+  justify-content: center;
+  place-items: center;
+  background-color: navy;
+  grid-area: d;
+}
+.container2{
+  grid-area: e;
+  display:flex;
+flex-direction:column;
+  justify-content: center;
+}
+.item5{display:flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  
+  background-color:rgb(206, 246, 226);
+ 
+}
+
+.item6{
+  display:flex;
+ justify-content: center;
+ align-items: center;
+  height: 100px;
+  background-color:rgba(78, 230, 177, 0.963);
+}
+
+.item7{
+ display:flex;
+ justify-content: center;
+ align-items: center;
+background-color: rgb(247, 186, 82);
+grid-area:f;
+height: 40px;
+}
