@@ -1,18 +1,24 @@
-import './App.css'
-import {movies} from './mocks/movie.js';
-import Movie from "./components/Movie.jsx";
-
+import './App.css';
+import { MOVIES } from "./mocks/movies";
+import Movie from './components/Movie';
 
 function App() {
   return (
     <div>
-      <div className="moviesContainer">
-        {movies.results.map((movie) => (
-          <Movie key={movie.id} movie={movie}/>
-        ))}
-       
-      </div>
-    </div>
+       <div className= "app-container">
+       {MOVIES.results.map((item) => {
+          return(
+            <Movie
+            key={item.id}
+               poster_path={item.poster_path}
+            />
+
+          )
+        })
+       }
+    
+       </div>
+     </div>
   );
 }
 
