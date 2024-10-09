@@ -12,7 +12,7 @@ const LayoutContainer = styled.div`
 const MainContainer = styled.div`
   display: flex; /* 사이드바 & outlet 가로로 */
   flex: 1; /* 나머지 공간 차지 */
-  height: calc(100vh - 50px);
+
 `;
 
 const SidebarContainer = styled(Sidebar)`

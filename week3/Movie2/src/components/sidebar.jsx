@@ -8,7 +8,6 @@ import { MdOutlineMovie } from "react-icons/md";
 const SidebarContainer = styled.div`
   width: 250px; 
   background-color: #141517; 
-  height: 100vh;
   padding: 20px; 
   display: flex;
   flex-direction: column;
