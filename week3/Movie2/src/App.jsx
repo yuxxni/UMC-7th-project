@@ -9,8 +9,11 @@ import NowPlaying from "./pages/NowPlaying";
 import Popular from "./pages/Popular";
 import TopRated from "./pages/TopRated";
 import Upcoming from "./pages/Upcoming";
+import NotFound from "./pages/NotFound";
+import MovieDetail from "./pages/MovieDetail"; 
 import RootLayout from "./layout/root-layout";
 import './App.css'; 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -25,7 +28,9 @@ const router = createBrowserRouter([
       { path: "movies/now-playing", element: <NowPlaying /> }, 
       { path: "movies/popular", element: <Popular /> }, 
       { path: "movies/toprated", element: <TopRated /> }, 
-      { path: "movies/upcoming", element: <Upcoming /> }, 
+      { path: "movies/upcoming", element: <Upcoming /> },
+      { path: "movies/:movieId", element: <MovieDetail /> }, 
+      { path: "*", element: <NotFound /> },
     ],
   },
 ]);
@@ -35,5 +40,3 @@ function App() {
 }
 
 export default App;
-
-
