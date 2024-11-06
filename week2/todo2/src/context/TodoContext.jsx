@@ -19,7 +19,7 @@ export function TodoContextProvider({ children }) {
       ...prev,
       { id: Math.floor(Math.random() * 100) + 2, task: text },
     ]);
-    setText(''); // 추가 후 입력창 초기화
+    setText(''); 
   };
 
   // 2. 삭제하기
@@ -33,7 +33,7 @@ export function TodoContextProvider({ children }) {
       prev.map((item) => (item.id === id ? { ...item, task: text } : item))
     );
     setEditingId('');
-    setEditText(''); // 수정 완료 후 초기화
+    setEditText(''); 
   };
 
   return (

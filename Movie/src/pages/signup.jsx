@@ -74,15 +74,15 @@ const SignUp = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/auth/register", {
+    await axios.post("http://localhost:3000/auth/register", {
         email: values.email,
         password: values.password,
         passwordCheck: values.passwordCheck,
       });
 
-      if (response.status === 200) {
-        navigate('/login'); // 회원가입 성공 후 로그인 페이지로 이동
-      }
+     
+        navigate('/login');
+    
     } catch (error) {
       console.error('회원가입 실패:', error);
     }
