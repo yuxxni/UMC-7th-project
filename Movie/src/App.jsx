@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { AuthProvider } from "./context/authContext"; 
 import Movies from "./pages/movies";
 import Home from "./pages/Home";
 import Login from "./pages/login";
@@ -13,24 +12,24 @@ import Upcoming from "./pages/Upcoming";
 import NotFound from "./pages/NotFound";
 import MovieDetail from "./pages/MovieDetail";
 import RootLayout from "./layout/root-layout";
-import './App.css'; 
+import './App.css';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,  
     children: [
-      { path: "", element: <Home /> },  
+      { path: "", element: <Home /> },
       { path: "movies", element: <Movies /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },
       { path: "search", element: <Search /> },
       { path: "categories", element: <Categories /> },
-      { path: "movies/now-playing", element: <NowPlaying /> }, 
-      { path: "movies/popular", element: <Popular /> }, 
-      { path: "movies/toprated", element: <TopRated /> }, 
+      { path: "movies/now-playing", element: <NowPlaying /> },
+      { path: "movies/popular", element: <Popular /> },
+      { path: "movies/toprated", element: <TopRated /> },
       { path: "movies/upcoming", element: <Upcoming /> },
-      { path: "movies/:movieId", element: <MovieDetail /> }, 
+      { path: "movies/:movieId", element: <MovieDetail /> },
       { path: "*", element: <NotFound /> },
     ],
   },
@@ -38,10 +37,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <AuthProvider>  
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <RouterProvider router={router} />
   );
 }
 
 export default App;
+
+
+

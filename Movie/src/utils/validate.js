@@ -1,6 +1,5 @@
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-
 function validateUser(values) {
     const errors = {};
 
@@ -27,13 +26,12 @@ function validateUser(values) {
     return errors;
 }
 
-function validateLogin(values) {
-    return validateUser(values);
-}
-
+const validateLogin = (values) => {
+    return validateUser(values); // 로그인은 기본적으로 user validation만 하면 됨
+};
 
 const validateSignup = (values) => {
-    const errors = validateUser(values);
+    const errors = validateUser(values); // 기본적인 유저 검증
 
     // 비밀번호 확인 검사
     if (!values.passwordCheck) {

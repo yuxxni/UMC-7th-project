@@ -5,6 +5,43 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { validateLogin } from '../utils/validate'; 
 
+const axiosInstance = axios.create({
+  baseURL: 'http://localhost:3000',
+});
+
+// AccessToken이 만료되었을 때 refreshToken을 통해 새로운 AccessToken을 요청하는 인터셉터 설정
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const refreshToken = localStorage.getItem('refreshToken');
+      
+      if (refreshToken) {
+        try {
+          const response = await axios.post('/auth/token/access', null, {
+            headers: { Authorization: `Bearer ${refreshToken}` },
+          });
+          
+          const { accessToken, refreshToken: newRefreshToken } = response.data;
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', newRefreshToken);
+          axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+          
+          originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+          return axiosInstance(originalRequest);
+        } catch (err) {
+          console.error('토큰 재발급 실패:', err);
+        }
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 const LoginContainer = styled.div`
   background-color: #131416;
   min-height: calc(100vh - 50px);
@@ -55,14 +92,11 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
     setError,
-    clearErrors,
   } = useForm();
 
   const onSubmit = async (data) => {
-
     const validationErrors = validateLogin(data);
     if (Object.keys(validationErrors).length > 0) {
-      
       Object.keys(validationErrors).forEach((field) => {
         setError(field, { message: validationErrors[field] });
       });
@@ -70,14 +104,33 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/auth/login', {
+      const response = await axiosInstance.post('/auth/login', {
         email: data.email,
         password: data.password,
       });
       console.log('로그인 성공:', response.data);
+
+      const { accessToken, refreshToken } = response.data;
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+
       navigate('/');
     } catch (error) {
       console.error('로그인 실패:', error);
+    }
+  };
+
+  const logout = async () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+
+    try {
+      await axiosInstance.post('/auth/logout');
+      console.log('로그아웃 성공');
+      navigate('/');
+    } catch (error) {
+      console.error('로그아웃 실패:', error);
+      navigate('/login');
     }
   };
 
@@ -105,8 +158,16 @@ const Login = () => {
           로그인
         </Button>
       </form>
+      <Button onClick={logout}>로그아웃</Button>
     </LoginContainer>
   );
 };
 
 export default Login;
+
+
+
+
+
+
+

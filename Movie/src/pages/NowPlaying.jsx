@@ -1,7 +1,7 @@
 import React from 'react';
 import useCustomFetch from '../hooks/useCustomFetch'; 
 import styled from 'styled-components';
-import MovieCard from '../components/MovieCard'; // MovieCard import
+import MovieCard from '../components/MovieCard'; 
 
 const MovieGrid = styled.div`
   display: flex;

@@ -74,13 +74,18 @@ const SignUp = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-    await axios.post("http://localhost:3000/auth/register", {
+      await axios.post("http://localhost:3000/auth/register", {
         email: values.email,
         password: values.password,
         passwordCheck: values.passwordCheck,
+      }, { 
+        headers: {
+          'Content-Type': 'application/json'
+
+        }
       });
 
-     
+    
         navigate('/login');
     
     } catch (error) {
