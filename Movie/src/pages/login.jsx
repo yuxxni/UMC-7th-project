@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
   baseURL: 'http://localhost:3000',
 });
 
-// AccessToken이 만료되었을 때 refreshToken을 통해 새로운 AccessToken을 요청하는 인터셉터 설정
+// AccessToken이 만료되었을 때 refreshToken을 통해 새로운 AccessToken을 요청하기
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
