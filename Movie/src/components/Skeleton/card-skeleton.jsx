@@ -1,5 +1,24 @@
 import styled, { keyframes } from "styled-components";
 
+
+const skeleton = keyframes`
+    0% {
+        opacity: 1;
+    }
+    30% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    80% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 1;
+    }
+`;
+
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -38,7 +57,6 @@ const DescriptionBox = styled.div`
     animation: ${skeleton} 3s 1s infinite linear alternate;
 `;
 
-
 const CardSkeleton = () => {
     return (
         <Container>
@@ -52,22 +70,3 @@ const CardSkeleton = () => {
 };
 
 export default CardSkeleton;
-
-const skeleton = keyframes`
-    0% {
-        opacity: 1;
-    }
-    30% {
-        opacity: 0.2;
-    }
-    50% {
-        opacity: 0.4;
-    }
-    80% {
-        opacity: 0.8;
-    }
-    100% {
-        opacity: 1;
-    }
-`;
-
