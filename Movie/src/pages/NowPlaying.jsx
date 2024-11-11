@@ -1,7 +1,9 @@
 import React from 'react';
-import useCustomFetch from '../hooks/useCustomFetch'; 
+import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
-import MovieCard from '../components/MovieCard'; 
+import MovieCard from '../components/MovieCard';
+import { useGetMovies } from '../hooks/queries/useGetMovies';
+import CardListSkeleton from '../components/Skeleton/card-list-skeleton';
 
 const MovieGrid = styled.div`
   display: flex;
@@ -11,14 +13,23 @@ const MovieGrid = styled.div`
 `;
 
 const NowPlaying = () => {
-  const { data: responseData, isLoading, isError } = useCustomFetch('/movie/now_playing?language=ko-KR&page=1');
+  const { data: responseData, isLoading, isError } = useQuery({
+    queryFn: () => useGetMovies({ category: 'now_playing', pageParam: 1 }),
+    queryKey: ['movies', 'now_playing'],
+    cacheTime: 10000,
+    staleTime: 10000,
+  });
 
   if (isLoading) {
-    return <div style={{ color: 'white' }}>로딩 중입니다...</div>;
+    return (
+      <MovieGrid>
+        <CardListSkeleton number={20} />
+      </MovieGrid>
+    );
   }
 
   if (isError) {
-    return <div style={{ color: 'white' }}>에러 중입니다...</div>;
+    return <div style={{ color: 'white' }}>에러가 발생했습니다.</div>;
   }
 
   const movies = responseData?.results || [];
@@ -36,3 +47,4 @@ const NowPlaying = () => {
 };
 
 export default NowPlaying;
+

@@ -35,11 +35,10 @@ const StyledLink = styled(Link)`
 `;
 
 const MovieCard = ({ movie }) => {
-  // 포스터 이미지가 없을 경우 기본 이미지로 설정
+
   const posterUrl = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-    : '/path/to/default-image.jpg'; // 기본 이미지 경로를 지정해주세요
-
+    : `https://screenshotlayer.com/images/assets/placeholder.png`;
   return (
     <MovieItem>
       <StyledLink to={`/movies/${movie.id}`}>

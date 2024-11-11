@@ -1,7 +1,8 @@
 import React from 'react';
 import useCustomFetch from '../hooks/useCustomFetch'; 
 import styled from 'styled-components';
-import MovieCard from '../components/MovieCard'; // MovieCard import
+import MovieCard from '../components/MovieCard'; 
+import CardListSkeleton from '../components/Skeleton/card-list-skeleton'; // 스켈레톤 UI 
 
 const MovieGrid = styled.div`
   display: flex;
@@ -14,7 +15,8 @@ const TopRated = () => {
   const { data, isLoading, isError } = useCustomFetch('/movie/top_rated?language=ko-KR&page=1');
   
   if (isLoading) {
-    return <div style={{ color: 'white' }}>로딩 중입니다...</div>;
+   
+    return <CardListSkeleton number={20} />;  
   }
 
   if (isError) {

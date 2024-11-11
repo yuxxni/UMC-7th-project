@@ -8,7 +8,6 @@ const axiosInstance = axios.create({
   timeout: 10000, 
 });
 
-// refreshAccessToken 함수 정의
 const refreshAccessToken = async () => {
   try {
     const refreshToken = localStorage.getItem('refreshToken');
@@ -34,7 +33,6 @@ const refreshAccessToken = async () => {
   }
 };
 
-// Axios request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
@@ -46,7 +44,6 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Axios response interceptor
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -60,14 +57,16 @@ axiosInstance.interceptors.response.use(
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
       } else {
-        window.location.href = '/login';  // 리다이렉트
+        window.location.href = '/login';  
       }
     }
     return Promise.reject(error);
   }
 );
 
-export default axiosInstance;  // default export로 변경
+export default axiosInstance;
+
+
 
 
 

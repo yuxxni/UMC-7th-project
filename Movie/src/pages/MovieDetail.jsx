@@ -1,7 +1,8 @@
-import styled from "styled-components";
-import useCustomFetch from "../hooks/useCustomFetch";
-import { useParams } from "react-router-dom";
-
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import useCustomFetch from '../hooks/useCustomFetch'; 
+import CardListSkeleton from '../components/Skeleton/card-list-skeleton';
 
 const DetailSection = styled.div`
     color: white;
@@ -25,7 +26,7 @@ const InfoItem = styled.div`
 `;
 
 const Tagline = styled.div`
-    font-stlye: italic;
+    font-style: italic;
     font-weight: bold;
     font-size: 20px;
     padding: 15px 0;
@@ -33,8 +34,8 @@ const Tagline = styled.div`
 
 const Overview = styled.div`
     margin: 10px 0;
-    overflow: hidden; /* 넘치는 부분 숨기기 */
-    height: auto; /* 자동 높이 설정 */
+    overflow: hidden;
+    height: auto;
 `;
 
 const ImageWrapper = styled.div`
@@ -96,45 +97,46 @@ const Role = styled.div`
 const MovieDetail = () => {
     const { movieId } = useParams();
 
-    const { data: movies, isLoading, isError } = useCustomFetch(`/movie/${movieId}?language=ko-KR`);
-    const { data: actors } = useCustomFetch(`/movie/${movieId}/credits?language=ko-KR`);
+    
+    const { data: movieData, isLoading: isMovieLoading, isError: isMovieError } = useCustomFetch(`/movie/${movieId}?language=ko-KR`);
+    const { data: creditsData, isLoading: isCreditsLoading } = useCustomFetch(`/movie/${movieId}/credits?language=ko-KR`);
 
-    if (isLoading) {
-        return <div style={{ color: 'white' }}>로딩 중입니다...</div>;
+    if (isMovieLoading || isCreditsLoading) {
+        return <CardListSkeleton number={1} />;
     }
 
-    if (isError) {
-        return <div style={{ color: 'white' }}>에러 중입니다...</div>;
+    if (isMovieError) {
+        return <div style={{ color: 'white' }}>영화 정보를 불러오는 데 문제가 발생했습니다.</div>;
     }
 
     return (
         <div>
             <DetailSection>
                 <ImageWrapper>
-                    <img src={`https://image.tmdb.org/t/p/w500${movies?.backdrop_path}`} alt='영화 포스터' />
+                    <img src={`https://image.tmdb.org/t/p/w500${movieData?.backdrop_path}`} alt="영화 포스터" />
                 </ImageWrapper>
                 <InfoWrapper>
-                    <h1>{movies?.title}</h1>
-                    <InfoItem>평균: {movies?.vote_average}</InfoItem>
-                    <InfoItem>개봉일: {movies?.release_date}</InfoItem>
-                    <InfoItem>러닝타임: {movies?.runtime}분</InfoItem>
-                    <Tagline>{movies?.tagline}</Tagline>
-                    <Overview>{movies?.overview}</Overview>
+                    <h1>{movieData?.title}</h1>
+                    <InfoItem>평균: {movieData?.vote_average}</InfoItem>
+                    <InfoItem>개봉일: {movieData?.release_date}</InfoItem>
+                    <InfoItem>러닝타임: {movieData?.runtime}분</InfoItem>
+                    <Tagline>{movieData?.tagline}</Tagline>
+                    <Overview>{movieData?.overview}</Overview>
                 </InfoWrapper>
             </DetailSection>
 
             <CreditSection>
                 <h2>감독/출연</h2>
                 <ActorGrid>
-                    {actors?.cast && actors.cast.length > 0 ? (
-                        actors.cast.map((actor) => (
+                    {creditsData?.cast && creditsData.cast.length > 0 ? (
+                        creditsData.cast.map((actor) => (
                             <ActorProfile key={actor.id}>
                                 <ProfileImgWrapper>
                                     <img src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`} alt={actor.name} />
                                 </ProfileImgWrapper>
                                 <NameWrapper>
                                     <div className="name">{actor.name}</div>
-                                    <Role>{actor.character}({actor.known_for_department})</Role>
+                                    <Role>{actor.character} ({actor.known_for_department})</Role>
                                 </NameWrapper>
                             </ActorProfile>
                         ))
