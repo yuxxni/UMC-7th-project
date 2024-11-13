@@ -110,4 +110,3 @@ const Button = styled(Link)`
     background-color: rgba(243, 47, 95, 0.5);
   }
 `;
-
