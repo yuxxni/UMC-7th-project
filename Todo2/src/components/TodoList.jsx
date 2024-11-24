@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getTodos, deleteTodo, createTodo } from '../apis/todo';
+import { getTodos, deleteTodo, createTodo, updateTodo } from '../apis/todo';
 import TodoForm from './TodoForm';
 import styled from 'styled-components';
 
@@ -34,10 +34,12 @@ const Button = styled.button`
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
-  const [searchText, setSearchText] = useState(''); // 검색창 상태
+  const [searchText, setSearchText] = useState('');
   const [loading, setLoading] = useState(true);
+  const [editId, setEditId] = useState(null); // 수정할 Todo의 ID 상태 추가
+  const [todoTitle, setTodoTitle] = useState('');
+  const [todoContent, setTodoContent] = useState('');
 
-  // 할 일 목록 가져오기
   const fetchTodos = async () => {
     try {
       setLoading(true);
@@ -50,7 +52,7 @@ const TodoList = () => {
     }
   };
 
-  // 할 일 생성하기
+  // Todo 생성하기
   const handleCreate = async (todo) => {
     try {
       await createTodo(todo.title, todo.content);
@@ -60,7 +62,23 @@ const TodoList = () => {
     }
   };
 
-  // 할 일 삭제하기
+  // Todo 수정하기
+  const handleUpdate = async (id) => {
+    try {
+      const updatedData = {
+        title: todoTitle,
+        content: todoContent,
+      };
+      await updateTodo(id, updatedData); // 수정 요청
+      setEditId(null); // 수정 완료 후 수정 모드 종료
+      fetchTodos(); // Todo 목록 갱신
+    } catch (error) {
+      console.error('수정 실패:', error);
+      alert('Todo 수정에 실패했습니다.');
+    }
+  };
+
+  // Todo 삭제하기
   const handleDelete = async (id) => {
     try {
       await deleteTodo(id);
@@ -71,19 +89,11 @@ const TodoList = () => {
     }
   };
 
-  // 체크박스 상태 변경하기
-  const handleCheckboxChange = (id) => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, checked: !todo.checked } : todo
-      )
-    );
-  };
-
   useEffect(() => {
     fetchTodos();
   }, []);
 
+  // 검색 필터
   const filteredTodos = todos.filter(
     (todo) =>
       todo.title.includes(searchText) || todo.content.includes(searchText)
@@ -94,7 +104,6 @@ const TodoList = () => {
   return (
     <div>
       <h1>할 일 목록</h1>
-      {/* 검색창 */}
       <input
         type="text"
         placeholder="검색어를 입력하세요"
@@ -109,25 +118,52 @@ const TodoList = () => {
         }}
       />
 
-      {/* Todo 생성 폼 */}
       <TodoForm onSubmit={handleCreate} />
 
-      {/* 필터링된 Todo 리스트 */}
       {filteredTodos.length > 0 ? (
         filteredTodos.map((todo) => (
           <TodoItem key={todo.id}>
             <div>
-              <h2>{todo.title}</h2>
-              <p>{todo.content}</p>
-              <input
-                type="checkbox"
-                checked={todo.checked}
-                onChange={() => handleCheckboxChange(todo.id)}
-              />
+              {editId === todo.id ? (
+                <div>
+                  <input
+                    type="text"
+                    value={todoTitle}
+                    onChange={(e) => setTodoTitle(e.target.value)}
+                    placeholder="수정할 제목"
+                  />
+                  <textarea
+                    value={todoContent}
+                    onChange={(e) => setTodoContent(e.target.value)}
+                    placeholder="수정할 내용"
+                  />
+                  <Button onClick={() => handleUpdate(todo.id)}>수정 완료</Button>
+                </div>
+              ) : (
+                <>
+                  <h2>{todo.title}</h2>
+                  <p>{todo.content}</p>
+                  <input
+                    type="checkbox"
+                    checked={todo.checked}
+                    onChange={() => handleCheckboxChange(todo.id)}
+                  />
+                </>
+              )}
             </div>
             <TodoActions>
               <Button onClick={() => handleDelete(todo.id)}>삭제</Button>
-              <Button>수정</Button>
+              {editId === todo.id ? (
+                <Button onClick={() => setEditId(null)}>수정 취소</Button>
+              ) : (
+                <Button onClick={() => {
+                  setEditId(todo.id);
+                  setTodoTitle(todo.title);
+                  setTodoContent(todo.content);
+                }}>
+                  수정
+                </Button>
+              )}
               <Link to={`/todo/${todo.id}`}>
                 <Button>상세보기</Button>
               </Link>

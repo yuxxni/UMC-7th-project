@@ -1,4 +1,4 @@
-// src/hooks/debounce.jsx
+// src/hooks/useDebounce.jsx
 import { useState, useEffect } from "react";
 
 function useDebounce(value, delay) {

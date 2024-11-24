@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getTodoById, updateTodo, deleteTodo } from '../apis/todo'; // 필요한 함수들
 import styled from 'styled-components';
+import Input from './Input'; 
 
 const TodoDetail = () => {
   const { id } = useParams(); 
