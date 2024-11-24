@@ -84,51 +84,22 @@ export const updateTodoStatus = async (id, status) => {
 
 
 
-/* import axiosInstance from "./axios-instance";
-
-const postTodo = async ({ title, content, checked = false }) => {
-  const { data } = await axiosInstance.post("/todo", {
-    title: title,
-    content: content,
-    checked: checked,
-  });
-
-  return data;
-};
-
-const getTodoList = async ({ title }) => {
-  let url = "/todo";
-
-  if (title) {
-    url += `?title=${title}`;
-  }
-  const { data } = await axiosInstance.get(url);
-
-  return data; // return 문을 함수 내부로 이동
-};
-
-const getTodo = async ({ id }) => {
-  console.log(id);  // 여기서 id 값이 잘 출력되는지 확인
-  const { data } = await axiosInstance.get(`/todo/${id}`);
-  return data;
-};
 
 
 
-const patchTodo = async ({ id, title, content, checked }) => {
-  const { data } = await axiosInstance.patch(`/todo/${id}`, {
-    title,
-    content,
-    checked,
-  });
 
-  return data;
-};
 
-const deleteTodo = async ({ id }) => {
-  const { data } = await axiosInstance.delete(`/todo/${id}`);
-  return data;
-};
 
-export { postTodo, getTodo, getTodoList, patchTodo, deleteTodo };
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
