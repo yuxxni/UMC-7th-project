@@ -1,6 +1,5 @@
-// hooks/useCustomFetch.js
 import { useState, useEffect } from 'react';
-import axiosInstance from '../apis/axios-instance'; // axios 인스턴스를 임포트
+import axiosInstance from '../apis/axios-instance'; 
 
 const useCustomFetch = (url) => {
   const [data, setData] = useState(null);
@@ -26,6 +25,11 @@ const useCustomFetch = (url) => {
 };
 
 export default useCustomFetch;
+
+
+
+
+
 
 
 

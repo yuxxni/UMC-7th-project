@@ -1,4 +1,138 @@
-import React, { useState, useEffect } from 'react';
+//Mission2
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { getTodoById, updateTodo, deleteTodo } from '../apis/todo'; // API 함수 import
+import styled from 'styled-components';
+import Input from './Input';
+
+const TodoDetail = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  // useQuery로 Todo 데이터 가져오기
+  const { data: todo, isLoading, isError, error } = useQuery(
+    ['todo', id], 
+    () => getTodoById(id) 
+  );
+
+  // useMutation으로 Todo 업데이트하기
+  const { mutate: updateTodoMutation } = useMutation(updateTodo, {
+    onSuccess: () => {
+      alert('Todo가 업데이트되었습니다!');
+      setIsEditMode(false);
+    },
+    onError: (error) => {
+      alert('수정 실패: ' + error.message);
+    }
+  });
+
+  // useMutation으로 Todo 삭제하기
+  const { mutate: deleteTodoMutation } = useMutation(deleteTodo, {
+    onSuccess: () => {
+      alert('Todo가 삭제되었습니다!');
+      navigate('/');
+    },
+    onError: (error) => {
+      alert('삭제 실패: ' + error.message);
+    }
+  });
+
+  const handleUpdate = () => {
+    const updatedTodo = { title, content };
+    updateTodoMutation({ id, updatedTodo });
+  };
+
+  const handleDelete = () => {
+    deleteTodoMutation(id);
+  };
+
+  if (isLoading) {
+    return <p>로딩 중...</p>;
+  }
+
+  if (isError) {
+    return <p>{error.message}</p>;
+  }
+
+  return (
+    <TodoDetailContainer>
+      <Title>Todo 상세 페이지</Title>
+      {isEditMode ? (
+        <div>
+          <p>ID: {todo?.id}</p>
+          <Input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          <ButtonContainer>
+            <button onClick={handleUpdate}>수정하기</button>
+            <button onClick={() => setIsEditMode(false)}>취소</button>
+          </ButtonContainer>
+        </div>
+      ) : (
+        <div>
+          <p>ID: {todo?.id}</p>
+          <h3>{todo?.title}</h3>
+          <p>{todo?.content}</p>
+          <p>{todo?.createdAt}</p>
+          <p>{todo?.status}</p>
+          <ButtonContainer>
+            <button onClick={() => setIsEditMode(true)}>수정하기</button>
+            <button onClick={handleDelete}>삭제하기</button>
+          </ButtonContainer>
+        </div>
+      )}
+    </TodoDetailContainer>
+  );
+};
+
+const TodoDetailContainer = styled.div`
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+`;
+
+const Title = styled.h2`
+  text-align: center;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+
+  button {
+    background-color: #EFEFEF;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: #dcdcdc;
+    }
+  }
+`;
+
+export default TodoDetail;
+
+
+
+
+//Mission1
+/* import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getTodoById, updateTodo, deleteTodo } from '../apis/todo'; // 필요한 함수들
 import styled from 'styled-components';
@@ -174,7 +308,7 @@ const ErrorImage = styled.img`
   margin-bottom: 20px;
 `;
 
-export default TodoDetail;
+export default TodoDetail; */
 
 
 
