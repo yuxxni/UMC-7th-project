@@ -1,4 +1,3 @@
-// Subscriptions.jsx
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '../apis/axios-instance'; 

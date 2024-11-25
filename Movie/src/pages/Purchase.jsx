@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import CardListSkeleton from '../components/Skeleton/card-list-skeleton'; // 스켈레톤 컴포넌트 추가
-import MovieCard from '../components/MovieCard'; // 영화 카드 컴포넌트 추가
+import CardListSkeleton from '../components/Skeleton/card-list-skeleton'; 
+import MovieCard from '../components/MovieCard'; 
 
-// 스타일 컴포넌트
+
 const HashtagContainer = styled.div`
   display: flex;
   gap: 10px;
@@ -35,13 +35,13 @@ const MovieList = styled.div`
 
 const Purchase = () => {
   const [movies, setMovies] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState(28); // 기본 장르는 액션
+  const [selectedGenre, setSelectedGenre] = useState(28); 
   const [page, setPage] = useState(1);
 
-  // 영화 데이터 불러오기
+
   const fetchMovies = async (genreId, page) => {
-    const apiKey = import.meta.env.VITE_TMDB_TOKEN; // 환경 변수에서 API 키 불러오기
-    const apiUrl = import.meta.env.VITE_MOVIE_API_URL; // API URL
+    const apiKey = import.meta.env.VITE_TMDB_TOKEN; 
+    const apiUrl = import.meta.env.VITE_MOVIE_API_URL; 
 
     if (!apiKey || !apiUrl) {
       console.error('API 키 또는 URL이 설정되지 않았습니다.');
@@ -54,7 +54,7 @@ const Purchase = () => {
         `${apiUrl}/discover/movie?language=ko-KR${genreQuery}&page=${page}`,
         {
           headers: {
-            Authorization: `Bearer ${apiKey}`, // Bearer Token으로 인증
+            Authorization: `Bearer ${apiKey}`, 
           },
         }
       );
@@ -64,14 +64,13 @@ const Purchase = () => {
     }
   };
 
-  // 장르가 선택되면 해당 장르의 영화들만 불러오기
+  // 장르 선택되면 해당 장르의 영화들만
   useEffect(() => {
     fetchMovies(selectedGenre, page);
   }, [selectedGenre, page]);
 
   return (
     <div>
-      {/* 장르 선택 해시태그 */}
       <HashtagContainer>
         <Hashtag onClick={() => setSelectedGenre(28)}>#액션</Hashtag>
         <Hashtag onClick={() => setSelectedGenre(35)}>#코미디</Hashtag>
@@ -79,7 +78,6 @@ const Purchase = () => {
         <Hashtag onClick={() => setSelectedGenre(27)}>#공포</Hashtag>
       </HashtagContainer>
 
-      {/* 영화 목록 */}
       {movies.length === 0 ? (
         <CardListSkeleton number={20} />
       ) : (
@@ -88,7 +86,7 @@ const Purchase = () => {
             <MovieCard 
               key={movie.id} 
               movie={movie} 
-              linkPath={`/purchase/${movie.id}`} // linkPath로 상세 페이지 연결
+              linkPath={`/purchase/${movie.id}`} 
             />
           ))}
         </MovieList>
@@ -116,7 +114,7 @@ const Purchase = () => {
   );
 };
 
-// 페이지 스타일링
+
 const styles = {
   paginationContainer: {
     marginTop: '20px',
