@@ -30,27 +30,30 @@ const TextWrapper = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  color: white;
   text-decoration: none;
+  color: inherit;
 `;
 
-const MovieCard = ({ movie }) => {
-
+const MovieCard = ({ movie, linkPath }) => {
   const posterUrl = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : `https://screenshotlayer.com/images/assets/placeholder.png`;
+
+  const formattedDate = movie.release_date
+    ? new Date(movie.release_date).toLocaleDateString('ko-KR')
+    : '개봉일 없음';
+
   return (
-    <MovieItem>
-      <StyledLink to={`/movies/${movie.id}`}>
+    <StyledLink to={linkPath}> {/* linkPath를 활용 */}
+      <MovieItem>
         <Poster src={posterUrl} alt={movie.title} />
         <TextWrapper>
           <h2>{movie.title}</h2>
-          <p>개봉일: {movie.release_date}</p>
+          <p>개봉일: {formattedDate}</p>
         </TextWrapper>
-      </StyledLink>
-    </MovieItem>
+      </MovieItem>
+    </StyledLink>
   );
 };
 
 export default MovieCard;
-

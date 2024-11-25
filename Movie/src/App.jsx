@@ -15,10 +15,13 @@ import TopRated from './pages/TopRated';
 import Upcoming from './pages/Upcoming';
 import NotFound from './pages/NotFound';
 import MovieDetail from './pages/MovieDetail';
+import Subscriptions from './pages/Subscriptions';
+import SubscribeDetail from './pages/SubscribeDetail';
+import Purchase from './pages/Purchase';
+import PurchaseDetail from './pages/PurchaseDetail';  // PurchaseDetail 컴포넌트 추가
 import RootLayout from './layout/root-layout';
 import './App.css';
 
-// QueryClient 인스턴스 생성
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -37,6 +40,14 @@ const router = createBrowserRouter([
       { path: 'movies/toprated', element: <TopRated /> },
       { path: 'movies/upcoming', element: <Upcoming /> },
       { path: 'movies/:movieId', element: <MovieDetail /> },
+
+      { path: 'subscriptions', element: <Subscriptions /> },
+      { path: 'subscriptions/:movieId', element: <SubscribeDetail /> },
+
+      { path: 'purchase', element: <Purchase /> }, // Purchase 페이지 경로
+
+      { path: 'purchase/:movieId', element: <PurchaseDetail /> },  // PurchaseDetail 페이지 경로 추가
+
       { path: '*', element: <NotFound /> },
     ],
   },
@@ -44,15 +55,14 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}> 
-      <RouterProvider router={router} /> 
-      <ReactQueryDevtools initialIsOpen={false} /> 
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
 
 export default App;
-
 
 
 

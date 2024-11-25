@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { MdOutlineMovie } from "react-icons/md";
+import { GoArchive } from "react-icons/go";
+import { LuShoppingCart } from "react-icons/lu";
 
 const SidebarContainer = styled.div`
   width: 250px; 
@@ -26,9 +28,8 @@ const NavItem = styled(Link)`
 `;
 
 const Icon = styled.span`
- margin-right: 10px;
+  margin-right: 10px;
 `;
-
 
 const Sidebar = () => {
   return (
@@ -45,6 +46,18 @@ const Sidebar = () => {
         </Icon>
           영화
      </NavItem>
+      <NavItem to="/subscriptions">
+         <Icon>
+           <GoArchive />
+         </Icon>
+           구독
+      </NavItem>
+      <NavItem to="/purchase">
+         <Icon>
+           <LuShoppingCart />
+         </Icon>
+           개별 구매
+      </NavItem>
     </SidebarContainer>
   );
 };

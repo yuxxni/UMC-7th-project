@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import useForm from '../hooks/use-form'; 
-import { validateSignup } from '../utils/validate'; 
+import useForm from '../hooks/use-form';
+import { validateSignup } from '../utils/validate';
+import { useMutation } from 'react-query';
 import axios from 'axios';
-
 
 const SignUpContainer = styled.div`
   background-color: #131416;
@@ -16,7 +16,6 @@ const SignUpContainer = styled.div`
   justify-content: center;
 `;
 
-
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -24,7 +23,6 @@ const Form = styled.form`
   width: 100%;
   max-width: 400px;
 `;
-
 
 const Input = styled.input`
   padding: 10px;
@@ -36,14 +34,12 @@ const Input = styled.input`
   font-size: 14px;
 `;
 
-
 const ErrorText = styled.p`
   color: red;
   font-size: 12px;
   margin: -8px 0 8px;
   display: ${(props) => (props.visible ? 'block' : 'none')};
 `;
-
 
 const Button = styled.button`
   padding: 10px;
@@ -66,31 +62,40 @@ const SignUp = () => {
       password: '',
       passwordCheck: '',
     },
-    validate: validateSignup, 
+    validate: validateSignup,
   });
 
   const isButtonEnabled = !Object.keys(errors).length && Object.keys(touched).length > 0;
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      await axios.post("http://localhost:3000/auth/register", {
-        email: values.email,
-        password: values.password,
-        passwordCheck: values.passwordCheck,
-      }, { 
+  // useMutation을 사용한 회원가입 API 요청
+  const mutation = useMutation(
+    async (userData) => {
+      return axios.post('http://localhost:3000/auth/register', userData, {
         headers: {
-          'Content-Type': 'application/json'
-
-        }
+          'Content-Type': 'application/json',
+        },
       });
-
-    
+    },
+    {
+      onSuccess: () => {
+        console.log('회원가입 성공');
         navigate('/login');
-    
-    } catch (error) {
-      console.error('회원가입 실패:', error);
+      },
+      onError: (error) => {
+        console.error('회원가입 실패:', error);
+      },
     }
+  );
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    // API 호출
+    mutation.mutate({
+      email: values.email,
+      password: values.password,
+      passwordCheck: values.passwordCheck,
+    });
   };
 
   return (
@@ -121,10 +126,13 @@ const SignUp = () => {
         />
         <ErrorText visible={!!errors.passwordCheck}>{errors.passwordCheck}</ErrorText>
 
-        <Button type="submit" disabled={!isButtonEnabled}>회원가입</Button>
+        <Button type="submit" disabled={!isButtonEnabled}>
+          회원가입
+        </Button>
       </Form>
     </SignUpContainer>
   );
 };
 
 export default SignUp;
+

@@ -22,7 +22,7 @@ function NowPlaying() {
 
   return (
     <div>
-      <h1>현재 </h1>
+      <h1>현재 상영중인 영화</h1>
 
       {/* 로딩 상태 */}
       {isLoading ? (
@@ -32,7 +32,11 @@ function NowPlaying() {
       ) : (
         <div style={styles.movieContainer}>
           {data?.results?.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard
+              key={movie.id}
+              movie={movie}
+              linkPath={`/movies/${movie.id}`}  
+            />
           ))}
         </div>
       )}
@@ -44,8 +48,8 @@ function NowPlaying() {
           disabled={page === 1}
           style={{
             ...styles.paginationButton,
-            backgroundColor: page === 1 ? 'white' : '#F32F5F', 
-            color: page === 1 ? 'black' : 'white', 
+            backgroundColor: page === 1 ? 'white' : '#F32F5F',
+            color: page === 1 ? 'black' : 'white',
           }}
         >
           이전
@@ -56,8 +60,8 @@ function NowPlaying() {
           disabled={isLoading || !data?.total_pages || page >= data.total_pages}
           style={{
             ...styles.paginationButton,
-            backgroundColor: isLoading || page >= data.total_pages ? 'white' : '#F32F5F', 
-            color: isLoading || page >= data.total_pages ? 'black' : 'white', 
+            backgroundColor: isLoading || page >= data.total_pages ? 'white' : '#F32F5F',
+            color: isLoading || page >= data.total_pages ? 'black' : 'white',
           }}
         >
           다음
@@ -92,7 +96,8 @@ const styles = {
   },
 };
 
-export default NowPlaying
+export default NowPlaying;
+
 
 
 

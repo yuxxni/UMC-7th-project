@@ -17,7 +17,7 @@ const refreshAccessToken = async () => {
       throw new Error('No refresh token available');
     }
 
-    const response = await axios.post(' http://localhost:3000/auth/token/access', null, {
+    const response = await axios.post('http://localhost:3000/auth/token/access', null, {
       headers: {
         Authorization: `Bearer ${refreshToken}`, 
       },
@@ -30,11 +30,9 @@ const refreshAccessToken = async () => {
     return accessToken;
   } catch (error) {
     console.error('Failed to refresh token:', error);
-    window.location.href = '/login'; 
-    return null;
+    return null;  // 토큰 갱신 실패 시 null 반환
   }
 };
-
 
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -48,13 +46,12 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-
+    // 401 오류가 발생하고, 리프레시 토큰 갱신을 시도
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true; 
       const newAccessToken = await refreshAccessToken(); 
@@ -63,7 +60,8 @@ axiosInstance.interceptors.response.use(
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`; 
         return axiosInstance(originalRequest);
       } else {
-        window.location.href = '/login';  
+        // 토큰 갱신에 실패했을 때 이전 데이터를 계속 보여주도록 처리
+        return Promise.resolve({ data: error.config.previousData || [] }); // 이전 데이터를 유지
       }
     }
     return Promise.reject(error);
@@ -71,5 +69,6 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
+
 
 

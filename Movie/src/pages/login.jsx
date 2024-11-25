@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useMutation } from 'react-query'; // useMutation import 추가
 import { validateLogin } from '../utils/validate'; 
 
 const axiosInstance = axios.create({
@@ -85,6 +86,14 @@ const Button = styled.button`
   margin-top: 20px;
 `;
 
+const loginApi = async (data) => {
+  const response = await axiosInstance.post('/auth/login', {
+    email: data.email,
+    password: data.password,
+  });
+  return response.data;
+};
+
 const Login = () => {
   const navigate = useNavigate();
   const {
@@ -93,6 +102,19 @@ const Login = () => {
     formState: { errors },
     setError,
   } = useForm();
+
+  // useMutation으로 로그인 요청 처리
+  const { mutateAsync: loginMutation, isLoading } = useMutation(loginApi, {
+    onSuccess: (data) => {
+      const { accessToken, refreshToken } = data;
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      navigate('/');
+    },
+    onError: (error) => {
+      console.error('로그인 실패:', error);
+    },
+  });
 
   const onSubmit = async (data) => {
     const validationErrors = validateLogin(data);
@@ -104,19 +126,9 @@ const Login = () => {
     }
 
     try {
-      const response = await axiosInstance.post('/auth/login', {
-        email: data.email,
-        password: data.password,
-      });
-      console.log('로그인 성공:', response.data);
-
-      const { accessToken, refreshToken } = response.data;
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-
-      navigate('/');
+      await loginMutation(data); // 로그인 요청
     } catch (error) {
-      console.error('로그인 실패:', error);
+      console.error('로그인 오류:', error);
     }
   };
 
@@ -154,7 +166,7 @@ const Login = () => {
         />
         <ErrorText visible={!!errors.password}>{errors.password?.message}</ErrorText>
 
-        <Button type="submit" disabled={!!errors.email || !!errors.password}>
+        <Button type="submit" disabled={!!errors.email || !!errors.password || isLoading}>
           로그인
         </Button>
       </form>
@@ -164,10 +176,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-
-
-
-
-
