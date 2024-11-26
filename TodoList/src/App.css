@@ -1,21 +1,20 @@
-/* 기본 배경 색상 */
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box; /* 모든 요소의 크기를 계산할 때 padding과 border를 포함시킴 */
+  box-sizing: border-box; 
 }
 
 html, body {
   height: 100%;
   font-family: Arial, sans-serif;
-  display: block; /* flex를 사용하지 않도록 변경 */
+  display: block; 
   background-color: white;
-  margin: 0; /* body의 기본 여백을 없앰 */
+  margin: 0; 
 }
 
 .todo-container {
   max-width: 500px;
-  margin-top: 5000px; /* 원하는 만큼 상단 여백을 조정 */
+  margin-top: 5000px; 
   padding: 20px;
   background-color: white;
   border-radius: 10px;
@@ -24,11 +23,11 @@ html, body {
 }
 
 
-/* 리스트 아이템 스타일 */
+
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* 기타 스타일은 필요에 따라 추가 */
+

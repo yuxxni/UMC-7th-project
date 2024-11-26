@@ -6,20 +6,19 @@ import s from '../styles/InputTodo.module.css';
 export default function InputTodo() {
   const dispatch = useDispatch();
 
-  // 초기 상태에 id도 포함
+
   const [todolist, setTodolist] = useState({
-    id: 0,  // id는 고유값으로 관리되어야 합니다.
+    id: 0,  
     text: '',
   });
 
-  // 텍스트 변경 시 상태 업데이트
+ 
   function handleText(e) {
     setTodolist(prevState => ({ ...prevState, text: e.target.value }));
   }
 
-  // 입력 후 초기화 함수
   function onReset() {
-    setTodolist({ id: todolist.id + 1, text: '' }); // id 값을 증가시켜야 새로운 id가 부여됨
+    setTodolist({ id: todolist.id + 1, text: '' }); 
   }
 
   return (
@@ -28,7 +27,7 @@ export default function InputTodo() {
         onSubmit={(e) => {
           e.preventDefault();
           if (todolist.text !== '') {
-            dispatch(add(todolist));  // 전체 todo 객체를 전달
+            dispatch(add(todolist));  
             onReset();
           } else {
             alert('할 일을 입력해주세요!');

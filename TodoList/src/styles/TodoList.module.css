@@ -1,11 +1,10 @@
-/* TodoList.module.css */
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
   width: 100%;
-  max-width: 600px; /* 최대 너비 설정 */
-  margin: 0 auto; /* 좌우 여백을 자동으로 설정하여 중앙 정렬 */
+  max-width: 600px; 
+  margin: 0 auto; 
 }
 
 .list {
