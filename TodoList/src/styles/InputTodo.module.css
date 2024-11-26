@@ -1,0 +1,43 @@
+.InputTodo {
+  margin-top: 20px; /* 이 부분은 상단 여백을 좀 더 조정하여 위치를 위로 올림 */
+}
+
+/* 추가적으로 body의 상단 여백을 없애거나 조정 */
+body {
+  margin-top: 0; /* 전체 여백을 0으로 설정하여 상단을 더 올리도록 함 */
+  font-family: Arial, sans-serif;
+}
+
+/* 입력창과 버튼을 가로로 배치 */
+.formGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* 입력창과 버튼 사이에 간격을 둡니다 */
+}
+
+/* 입력창 길게 설정 */
+.textbar {
+  width: 70%; /* 입력창 길이를 70%로 설정 */
+  padding: 12px;
+  font-size: 18px;
+  margin-bottom: 0; /* margin-bottom 제거 */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* 버튼 크기 조정 및 색상 */
+.submitbutton {
+  background-color: #6C63FF;
+  color: white;
+  padding: 12px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 20%; /* 버튼 너비를 좁게 설정 */
+}
+
+.submitbutton:hover {
+  background-color: #5a53e5; /* 마우스 오버 시 색상 변경 */
+}

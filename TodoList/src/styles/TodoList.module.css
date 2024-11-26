@@ -1,0 +1,49 @@
+/* TodoList.module.css */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 600px; /* 최대 너비 설정 */
+  margin: 0 auto; /* 좌우 여백을 자동으로 설정하여 중앙 정렬 */
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 10px 15px;
+  margin: 5px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox {
+  margin-right: 15px;
+  transform: scale(1.2);
+}
+
+.todolist {
+  flex-grow: 1;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.todolist del {
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+.deleteBtn {
+  background-color: transparent;
+  border: none;
+  color: #635EF2;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.deleteBtn:hover {
+  color: #F2F2F2;
+}
