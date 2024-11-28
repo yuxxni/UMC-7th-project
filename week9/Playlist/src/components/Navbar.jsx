@@ -82,4 +82,3 @@ const CartAmount = styled.div`
     justify-content: center;
 `;
 
-
