@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import styled from 'styled-components'; 
 import CartItem from "./CartItem";
-import useCartStore from '../stores/useCartStore'; // zustand cart store
-import useModalStore from '../stores/useModalStore'; // zustand modal store
+import useCartStore from '../stores/useCartStore'; 
+import useModalStore from '../stores/useModalStore'; 
 
 const Container = styled.div`
     display: flex;
@@ -59,12 +59,12 @@ const Button = styled.button`
 `;
 
 function CartContainer() {
-    // useCartStore에서 cartItems와 calculateTotals 가져오기
+ 
     const { cartItems, total, calculateTotals } = useCartStore();
-    // useModalStore에서 openModal 가져오기
+
     const { openModal } = useModalStore();
 
-    // 총 가격을 계산하는 useEffect (cartItems 변경 시마다 총 가격 계산)
+  
     useEffect(() => {
         calculateTotals();
     }, [cartItems, calculateTotals]);

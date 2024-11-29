@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import cartItems from '../constants/cartItems';  // 기본 데이터를 가져오기
+import cartItems from '../constants/cartItems';  
 
 const useCartStore = create((set) => ({
   cartItems: cartItems,

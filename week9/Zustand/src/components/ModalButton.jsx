@@ -56,13 +56,13 @@ const NoButton = styled.button`
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  outline: none; /* outline을 없애서 외부 테두리 효과 제거 */
+  outline: none; 
 
   &:hover {
     background-color: #5753d1;
   }
 
   &:focus {
-    outline: none; /* 포커스 시 외곽선 제거 */
+    outline: none; 
   }
 `;

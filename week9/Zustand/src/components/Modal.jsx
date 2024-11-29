@@ -1,19 +1,19 @@
 import styled from "styled-components";
-import useModalStore from "../stores/useModalStore"; // zustand modal store
-import useCartStore from "../stores/useCartStore"; // zustand cart store
+import useModalStore from "../stores/useModalStore"; 
+import useCartStore from "../stores/useCartStore"; 
 
 const Modal = ({ children }) => {
-    // zustand를 사용하여 모달 상태와 장바구니 초기화 액션 가져오기
+
     const { closeModal } = useModalStore();
     const { clearCart } = useCartStore();
 
     const handleCloseModal = () => {
-        closeModal(); // 모달 닫기
+        closeModal(); 
     };
 
     const handleClearCart = () => {
-        clearCart(); // 장바구니 초기화
-        handleCloseModal(); // 모달 닫기
+        clearCart(); 
+        handleCloseModal(); 
     };
 
     return (

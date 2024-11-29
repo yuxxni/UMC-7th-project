@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from 'react-icons/md'; 
-import useCartStore from '../stores/useCartStore'; // Zustand 훅 import
+import useCartStore from '../stores/useCartStore'; 
 
 const CartItem = ({ id, title, singer, price, img, amount }) => {
-    const { increase, decrease, removeItem } = useCartStore(); // Zustand에서 액션 가져오기
+    const { increase, decrease, removeItem } = useCartStore(); 
 
     return (
         <Container>

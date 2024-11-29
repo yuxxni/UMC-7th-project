@@ -2,19 +2,18 @@ import { useEffect } from 'react';
 import './App.css';
 import CartContainer from './components/CartContainer';
 import Navbar from './components/Navbar';
-import useCartStore from './stores/useCartStore';  // zustand 장바구니 상태
-import useModalStore from './stores/useModalStore';  // zustand 모달 상태
+import useCartStore from './stores/useCartStore';  
+import useModalStore from './stores/useModalStore';  
 import ModalPortal from './components/ModalPortal';
 import Modal from './components/Modal';
 import Footer from './components/Footer';
 
 function App() {
-  const { cartItems, totalAmount, totalPrice, calculateTotals } = useCartStore();  // 장바구니 상태
-  const { isOpen } = useModalStore();  // 모달 상태
-
+  const { cartItems, totalAmount, totalPrice, calculateTotals } = useCartStore();  
+  const { isOpen } = useModalStore();  
   useEffect(() => {
-    calculateTotals();  // 장바구니 총합 계산
-  }, [cartItems, calculateTotals]);  // cartItems가 변경될 때마다 계산
+    calculateTotals();  
+  }, [cartItems, calculateTotals]);  
 
   return (
     <>
