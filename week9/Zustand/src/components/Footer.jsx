@@ -27,8 +27,8 @@ const StyledFooter = styled.footer`
   z-index: 10;
   height: 60px;
   width: 100%;
-  max-width: 800px; /* 최대 너비를 설정 */
-  margin: 0 auto; /* 자동으로 좌우 여백을 동일하게 */
+  max-width: 800px; 
+  margin: 0 auto; 
   
   div {
     display: flex;
