@@ -1,20 +1,21 @@
+import { useEffect } from 'react';
 import styled from 'styled-components'; 
 import CartItem from "./CartItem";
-import { useSelector, useDispatch } from "react-redux";
-import { openModal } from "../features/modal/modalSlice"; 
+import useCartStore from '../stores/useCartStore'; // zustand cart store
+import useModalStore from '../stores/useModalStore'; // zustand modal store
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
     margin: 20px;
-    width: 90%;  
+    width: 90%;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
 `;
 
 const Header = styled.header`
-    font-size: 1.2rem;  
+    font-size: 1.2rem;
     margin-bottom: 20px;
     h2 {
         color: #333;
@@ -23,10 +24,10 @@ const Header = styled.header`
 
 const PriceWrapper = styled.div`
     display: flex;
-    justify-content: space-between;  
+    justify-content: space-between;
     width: 100%;
     margin: 10px 0;
-    margin-bottom: 20px;  
+    margin-bottom: 20px;
     h4 {
         font-size: 1rem;
     }
@@ -34,13 +35,13 @@ const PriceWrapper = styled.div`
 
 const Footer = styled.footer`
     margin-top: 20px; 
-    padding: 10px;  
+    padding: 10px;
     border-top: 2px solid #ccc;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; 
-    height: 100px;  
+    justify-content: flex-start;
+    height: 100px;
 `;
 
 const Button = styled.button`
@@ -54,12 +55,19 @@ const Button = styled.button`
     &:hover {
         background-color: #e55e50;
     }
-    margin-top: 0;  
+    margin-top: 0;
 `;
 
 function CartContainer() {
-    const { cartItems, total } = useSelector((store) => store.cart);
-    const dispatch = useDispatch();
+    // useCartStore에서 cartItems와 calculateTotals 가져오기
+    const { cartItems, total, calculateTotals } = useCartStore();
+    // useModalStore에서 openModal 가져오기
+    const { openModal } = useModalStore();
+
+    // 총 가격을 계산하는 useEffect (cartItems 변경 시마다 총 가격 계산)
+    useEffect(() => {
+        calculateTotals();
+    }, [cartItems, calculateTotals]);
 
     return (
         <Container>
@@ -77,7 +85,7 @@ function CartContainer() {
             </PriceWrapper>
             <Footer>
                 {/* 장바구니 초기화 버튼 클릭 시 모달 열기 */}
-                <Button onClick={() => dispatch(openModal())}>
+                <Button onClick={openModal}>
                     장바구니 초기화
                 </Button>
             </Footer>
