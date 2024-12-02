@@ -1,152 +1,181 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import useCustomFetch from '../hooks/useCustomFetch'; 
+import useCustomFetch from '../hooks/useCustomFetch';
 import CardListSkeleton from '../components/Skeleton/card-list-skeleton';
 
-const DetailSection = styled.div`
-    color: white;
-    height: 400px;
-    position: relative;
+const PageWrapper = styled.div`
+  padding: 20px;
+  color: white;
 `;
 
-const InfoWrapper = styled.div`
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 450px;
-    height: 100%;
-    border-bottom: solid 2px white;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 15px;
+const Header = styled.div`
+  display: flex;
+  flex-direction: row-reverse; /* 영화 포스터를 오른쪽으로 배치 */
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 30px;
+
+  img {
+    width: 300px;
+    height: 450px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
 `;
 
-const InfoItem = styled.div`
-    margin: 10px 0;
-`;
+const InfoSection = styled.div`
+  flex: 1;
 
-const Tagline = styled.div`
+  h1 {
+    font-size: 36px;
+    margin: 0;
+    margin-bottom: 10px;
+  }
+
+  .tagline {
     font-style: italic;
-    font-weight: bold;
-    font-size: 20px;
-    padding: 15px 0;
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .details {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .overview {
+    line-height: 1.6;
+    margin-top: 15px;
+  }
 `;
 
-const Overview = styled.div`
-    margin: 10px 0;
-    overflow: hidden;
-    height: auto;
-`;
+const Section = styled.div`
+  margin-top: 30px;
 
-const ImageWrapper = styled.div`
-    height: 100%;
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
-
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        position: absolute;
-        z-index: 0;
-    }
-`;
-
-const CreditSection = styled.div`
-    color: white;
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
 `;
 
 const ActorGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 15px;
 `;
 
-const ActorProfile = styled.div`
-    color: white;
-    text-align: center;
-`;
+const ActorCard = styled.div`
+  text-align: center;
 
-const ProfileImgWrapper = styled.div`
+  img {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 1.5px solid white;
-    overflow: hidden;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
 
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-`;
+  .name {
+    font-size: 14px;
+    font-weight: bold;
+  }
 
-const NameWrapper = styled.div`
-    .name {
-        font-weight: bold;
-        font-size: 12px;
-    }
-`;
-
-const Role = styled.div`
-    font-size: 10px;
+  .role {
+    font-size: 12px;
     color: gray;
+  }
+`;
+
+const ReviewList = styled.div`
+  margin-top: 30px;
+  line-height: 1.6;
+`;
+
+const ReviewItem = styled.div`
+  margin-bottom: 20px;
+
+  .author {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .content {
+    font-size: 14px;
+  }
 `;
 
 const MovieDetail = () => {
-    const { movieId } = useParams();
+  const { movieId } = useParams();
 
-    
-    const { data: movieData, isLoading: isMovieLoading, isError: isMovieError } = useCustomFetch(`/movie/${movieId}?language=ko-KR`);
-    const { data: creditsData, isLoading: isCreditsLoading } = useCustomFetch(`/movie/${movieId}/credits?language=ko-KR`);
+  const { data: movieData, isLoading: isMovieLoading, isError: isMovieError } = useCustomFetch(`/movie/${movieId}?language=ko-KR`);
+  const { data: creditsData, isLoading: isCreditsLoading } = useCustomFetch(`/movie/${movieId}/credits?language=ko-KR`);
+  const { data: reviewsData, isLoading: isReviewsLoading } = useCustomFetch(`/movie/${movieId}/reviews?language=ko-KR`);
 
-    if (isMovieLoading || isCreditsLoading) {
-        return <CardListSkeleton number={1} />;
-    }
+  if (isMovieLoading || isCreditsLoading || isReviewsLoading) {
+    return <CardListSkeleton number={1} />;
+  }
 
-    if (isMovieError) {
-        return <div style={{ color: 'white' }}>영화 정보를 불러오는 데 문제가 발생했습니다.</div>;
-    }
+  if (isMovieError) {
+    return <div style={{ color: 'white' }}>영화 정보를 불러오는 데 문제가 발생했습니다.</div>;
+  }
 
-    return (
-        <div>
-            <DetailSection>
-                <ImageWrapper>
-                    <img src={`https://image.tmdb.org/t/p/w500${movieData?.backdrop_path}`} alt="영화 포스터" />
-                </ImageWrapper>
-                <InfoWrapper>
-                    <h1>{movieData?.title}</h1>
-                    <InfoItem>평균: {movieData?.vote_average}</InfoItem>
-                    <InfoItem>개봉일: {movieData?.release_date}</InfoItem>
-                    <InfoItem>러닝타임: {movieData?.runtime}분</InfoItem>
-                    <Tagline>{movieData?.tagline}</Tagline>
-                    <Overview>{movieData?.overview}</Overview>
-                </InfoWrapper>
-            </DetailSection>
+  return (
+    <PageWrapper>
+      <Header>
+        {/* 영화 포스터 */}
+        <img src={`https://image.tmdb.org/t/p/w500${movieData?.poster_path}`} alt="영화 포스터" />
+        
+        {/* 영화 정보 */}
+        <InfoSection>
+          <h1>{movieData?.title}</h1>
+          <div className="tagline">{movieData?.tagline}</div>
+          <div className="details">평균 평점: {movieData?.vote_average}</div>
+          <div className="details">개봉일: {movieData?.release_date}</div>
+          <div className="details">러닝타임: {movieData?.runtime}분</div>
+          <div className="overview">{movieData?.overview}</div>
+        </InfoSection>
+      </Header>
 
-            <CreditSection>
-                <h2>감독/출연</h2>
-                <ActorGrid>
-                    {creditsData?.cast && creditsData.cast.length > 0 ? (
-                        creditsData.cast.map((actor) => (
-                            <ActorProfile key={actor.id}>
-                                <ProfileImgWrapper>
-                                    <img src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`} alt={actor.name} />
-                                </ProfileImgWrapper>
-                                <NameWrapper>
-                                    <div className="name">{actor.name}</div>
-                                    <Role>{actor.character} ({actor.known_for_department})</Role>
-                                </NameWrapper>
-                            </ActorProfile>
-                        ))
-                    ) : (
-                        <div style={{ color: 'white' }}>정보 없음</div>
-                    )}
-                </ActorGrid>
-            </CreditSection>
-        </div>
-    );
+      {/* 배우 섹션 */}
+      <Section>
+        <h2>감독/출연</h2>
+        <ActorGrid>
+          {creditsData?.cast?.slice(0, 10).map((actor) => (
+            <ActorCard key={actor.id}>
+              <img
+                src={
+                  actor.profile_path
+                    ? `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+                    : '/default-profile.png'
+                }
+                alt={actor.name}
+              />
+              <div className="name">{actor.name}</div>
+              <div className="role">{actor.character}</div>
+            </ActorCard>
+          ))}
+        </ActorGrid>
+      </Section>
+
+
+      <Section>
+        <h2>리뷰</h2>
+        <ReviewList>
+          {reviewsData?.results?.length > 0 ? (
+            reviewsData.results.map((review) => (
+              <ReviewItem key={review.id}>
+                <div className="author">{review.author}</div>
+                <div className="content">{review.content}</div>
+              </ReviewItem>
+            ))
+          ) : (
+            <div>리뷰가 없습니다.</div>
+          )}
+        </ReviewList>
+      </Section>
+    </PageWrapper>
+  );
 };
 
 export default MovieDetail;

@@ -4,12 +4,10 @@ import axiosInstance from '../apis/axios-instance';
 import MovieCard from '../components/MovieCard';
 import CardListSkeleton from '../components/Skeleton/card-list-skeleton';
 
-
 const fetchMovies = async (page) => {
   const { data } = await axiosInstance.get(`/movie/upcoming?language=ko-KR&page=${page}`);
   return data;
 };
-
 
 function Upcoming() {
   const [page, setPage] = useState(1);
@@ -24,7 +22,6 @@ function Upcoming() {
     <div>
       <h1>개봉 예정인 영화</h1>
 
-
       {isLoading ? (
         <CardListSkeleton number={20} />
       ) : isError ? (
@@ -32,7 +29,7 @@ function Upcoming() {
       ) : (
         <div style={styles.movieContainer}>
           {data?.results?.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard key={movie.id} movie={movie} linkPath={`/movies/${movie.id}`} />
           ))}
         </div>
       )}
@@ -44,8 +41,8 @@ function Upcoming() {
           disabled={page === 1}
           style={{
             ...styles.paginationButton,
-            backgroundColor: page === 1 ? 'white' : '#F32F5F', 
-            color: page === 1 ? 'black' : 'white', 
+            backgroundColor: page === 1 ? 'white' : '#F32F5F',
+            color: page === 1 ? 'black' : 'white',
           }}
         >
           이전
@@ -56,8 +53,8 @@ function Upcoming() {
           disabled={isLoading || !data?.total_pages || page >= data.total_pages}
           style={{
             ...styles.paginationButton,
-            backgroundColor: isLoading || page >= data.total_pages ? 'white' : '#F32F5F', 
-            color: isLoading || page >= data.total_pages ? 'black' : 'white', 
+            backgroundColor: isLoading || page >= data.total_pages ? 'white' : '#F32F5F',
+            color: isLoading || page >= data.total_pages ? 'black' : 'white',
           }}
         >
           다음
@@ -93,6 +90,7 @@ const styles = {
 };
 
 export default Upcoming;
+
 
 
 

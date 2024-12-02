@@ -17,9 +17,10 @@ const InfoWrapper = styled.div`
     width: 450px;
     height: 100%;
     border-bottom: solid 2px white;
-    background: rgba(0, 0, 0, 0.6);
+    background: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.6) 80%, rgba(0, 0, 0, 0) 100%);
     padding: 15px;
 `;
+
 
 const InfoItem = styled.div`
     margin: 10px 0;
@@ -52,7 +53,6 @@ const ImageWrapper = styled.div`
         z-index: 0;
     }
 `;
-
 
 const ButtonWrapper = styled.div`
     position: absolute;
@@ -90,7 +90,6 @@ const CheckBox = styled.input`
     height: 20px;
     margin-bottom: 5px;  
 `;
-
 
 const CreditSection = styled.div`
     color: white;
@@ -133,23 +132,46 @@ const Role = styled.div`
     color: gray;
 `;
 
+const ReviewSection = styled.div`
+    color: white;
+    margin-top: 30px;
+`;
+
+const ReviewItem = styled.div`
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+`;
+
+const ReviewAuthor = styled.div`
+    font-weight: bold;
+    font-size: 16px;
+`;
+
+const ReviewContent = styled.div`
+    margin-top: 10px;
+    font-size: 14px;
+`;
+
 const SubscribeDetail = () => {
     const { movieId } = useParams();
     const { data: movieData, isLoading: isMovieLoading, isError: isMovieError } = useCustomFetch(`/movie/${movieId}?language=ko-KR`);
     const { data: creditsData, isLoading: isCreditsLoading } = useCustomFetch(`/movie/${movieId}/credits?language=ko-KR`);
+    const { data: reviewsData, isLoading: isReviewsLoading } = useCustomFetch(`/movie/${movieId}/reviews?language=ko-KR`);
 
     const [isChecked, setIsChecked] = useState(false);
-    const [isSubscribed, setIsSubscribed] = useState(false); // 구독 상태 추가
+    const [isSubscribed, setIsSubscribed] = useState(false);
 
     const handleCheckboxChange = (e) => {
         setIsChecked(e.target.checked);
     };
 
     const handleSubscribeClick = () => {
-        setIsSubscribed(!isSubscribed); // 구독 상태 변경
+        setIsSubscribed(!isSubscribed);
     };
 
-    if (isMovieLoading || isCreditsLoading) {
+    if (isMovieLoading || isCreditsLoading || isReviewsLoading) {
         return <CardListSkeleton number={1} />;
     }
 
@@ -171,11 +193,10 @@ const SubscribeDetail = () => {
                     <Tagline>{movieData?.tagline}</Tagline>
                     <Overview>{movieData?.overview}</Overview>
                 </InfoWrapper>
-                
-           
+
                 <ButtonWrapper>
                     <SubscribeButton onClick={handleSubscribeClick}>
-                        {isSubscribed ? '구독완료' : '구독하기'} 
+                        {isSubscribed ? '구독완료' : '구독하기'}
                     </SubscribeButton>
                     <CheckBoxWrapper>
                         <CheckBox 
@@ -208,6 +229,20 @@ const SubscribeDetail = () => {
                     )}
                 </ActorGrid>
             </CreditSection>
+
+            <ReviewSection>
+                <h2>리뷰</h2>
+                {reviewsData?.results && reviewsData.results.length > 0 ? (
+                    reviewsData.results.map((review) => (
+                        <ReviewItem key={review.id}>
+                            <ReviewAuthor>{review.author}</ReviewAuthor>
+                            <ReviewContent>{review.content}</ReviewContent>
+                        </ReviewItem>
+                    ))
+                ) : (
+                    <div style={{ color: 'white' }}>리뷰 정보가 없습니다.</div>
+                )}
+            </ReviewSection>
         </div>
     );
 };

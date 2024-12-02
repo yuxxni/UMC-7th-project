@@ -10,7 +10,7 @@ const fetchMovies = async (page) => {
   return data;
 };
 
-// NowPlaying 컴포넌트
+// TopRated 컴포넌트
 function TopRated() {
   const [page, setPage] = useState(1);
 
@@ -32,7 +32,7 @@ function TopRated() {
       ) : (
         <div style={styles.movieContainer}>
           {data?.results?.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard key={movie.id} movie={movie} linkPath={`/movies/${movie.id}`} />
           ))}
         </div>
       )}

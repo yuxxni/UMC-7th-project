@@ -10,7 +10,7 @@ const fetchMovies = async (page) => {
   return data;
 };
 
-// NowPlaying 컴포넌트
+// Popular 컴포넌트
 function Popular() {
   const [page, setPage] = useState(1);
 
@@ -32,7 +32,7 @@ function Popular() {
       ) : (
         <div style={styles.movieContainer}>
           {data?.results?.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard key={movie.id} movie={movie} linkPath={`/movies/${movie.id}`} />
           ))}
         </div>
       )}
@@ -44,8 +44,8 @@ function Popular() {
           disabled={page === 1}
           style={{
             ...styles.paginationButton,
-            backgroundColor: page === 1 ? 'white' : '#F32F5F', 
-            color: page === 1 ? 'black' : 'white', 
+            backgroundColor: page === 1 ? 'white' : '#F32F5F',
+            color: page === 1 ? 'black' : 'white',
           }}
         >
           이전
@@ -56,8 +56,8 @@ function Popular() {
           disabled={isLoading || !data?.total_pages || page >= data.total_pages}
           style={{
             ...styles.paginationButton,
-            backgroundColor: isLoading || page >= data.total_pages ? 'white' : '#F32F5F', 
-            color: isLoading || page >= data.total_pages ? 'black' : 'white', 
+            backgroundColor: isLoading || page >= data.total_pages ? 'white' : '#F32F5F',
+            color: isLoading || page >= data.total_pages ? 'black' : 'white',
           }}
         >
           다음
@@ -70,7 +70,7 @@ function Popular() {
 const styles = {
   movieContainer: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(6, 1fr)', 
+    gridTemplateColumns: 'repeat(6, 1fr)',
     gap: '40px',
   },
   paginationContainer: {
@@ -91,7 +91,6 @@ const styles = {
     borderRadius: '4px',
   },
 };
-
 
 export default Popular;
 
