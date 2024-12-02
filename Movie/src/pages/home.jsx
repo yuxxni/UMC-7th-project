@@ -140,7 +140,7 @@ const MovieInfo = styled.div`
     align-items: center;
 
     svg {
-      margin-right: 5px; /* 별 아이콘과 숫자 간격 */
+      margin-right: 5px; 
       color: white;
     }
   }
